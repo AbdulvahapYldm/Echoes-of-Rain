@@ -3,7 +3,7 @@ A survival, farming, and base-building game set in a medieval world. Developed a
 
 # 🎮 Game Overview
 - **Genre:** Survival / Crafting / Farming / Base-Building
-- **Engine:** Unreal Engine 5
+- **Engine:** Unreal Engine 5 (Version 5.5)
 - **Language:** C++
 - **Platform:** PC
 
