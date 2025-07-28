@@ -15,9 +15,10 @@ public class EchoesOfRain : ModuleRules
 			"Engine", 
 			"InputCore" ,
 			"EnhancedInput",
-			"HairStrandsCore" 
-		
-		});
+			"HairStrandsCore",
+            "UMG"
+
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

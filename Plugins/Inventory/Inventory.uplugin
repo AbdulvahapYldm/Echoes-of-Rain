@@ -18,7 +18,10 @@
 		{
 			"Name": "Inventory",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"EnhancedInput"
+			]
 		}
 	]
 }
