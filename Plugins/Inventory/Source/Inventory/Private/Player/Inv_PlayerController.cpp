@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Player/Inv_PlayerController.h"
 
 #include "EnhancedInputSubsystems.h"
@@ -10,12 +9,16 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#include "Items/Components/Inv_ItemComponent.h"
+
 
 AInv_PlayerController::AInv_PlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	TraceLength = 500.0; // Default distance for item trace (in cm)
+
+	ItemTraceChannel = ECollisionChannel::ECC_GameTraceChannel1;
 }
 
 
@@ -91,8 +94,8 @@ void AInv_PlayerController::CreateHUDWidget()
 // Performs a line trace from the center of the screen to detect interactable items
 void AInv_PlayerController::TraceForItem()
 {
-	
-	if (!IsValid(GEngine)|| !IsValid(GEngine->GameViewport)) return;// Validate engine and viewport
+
+	if (!IsValid(GEngine) || !IsValid(GEngine->GameViewport)) return;// Validate engine and viewport
 
 	// Get screen center
 	FVector2D ViewportSize;
@@ -116,15 +119,24 @@ void AInv_PlayerController::TraceForItem()
 	LastActor = ThisActor;
 	ThisActor = HitResult.GetActor();
 
+
+	if (!ThisActor.IsValid())
+	{
+		if (IsValid(HUDWidget)) HUDWidget->HidePickupMessage();
+	}
+
 	if (ThisActor == LastActor) return;	// If the traced actor hasn't changed, do nothing
 
 	if (ThisActor.IsValid())
 	{
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Started tracing a new actor"));
-		}
+		UInv_ItemComponent* ItemComponent = ThisActor->FindComponentByClass<UInv_ItemComponent>();
+
+		if (!IsValid(ItemComponent)) return;
+
+		if (IsValid(HUDWidget)) HUDWidget->ShowPickupMessage(ItemComponent->GetPickupMessage());
+
 	}
+
 	if (LastActor.IsValid())
 	{
 		if (GEngine)
