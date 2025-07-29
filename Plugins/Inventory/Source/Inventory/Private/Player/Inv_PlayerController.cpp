@@ -8,6 +8,17 @@
 #include "InputActionValue.h"
 #include "Widgets/HUD/Inv_HUDWidget.h"
 
+#include "Kismet/GameplayStatics.h"
+
+
+AInv_PlayerController::AInv_PlayerController()
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+	TraceLength = 500.0; // Default distance for item trace (in cm)
+}
+
+
 
 void AInv_PlayerController::BeginPlay()
 {
@@ -26,6 +37,18 @@ void AInv_PlayerController::BeginPlay()
 	CreateHUDWidget(); // Create and display the HUD widget
 
 }
+
+
+void AInv_PlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Perform a trace every frame to check for interactable items
+	TraceForItem();
+
+
+}
+
 
 void AInv_PlayerController::SetupInputComponent()// The input component is configured here
 {
@@ -59,6 +82,57 @@ void AInv_PlayerController::CreateHUDWidget()
 	{
 		HUDWidget->AddToViewport();
 	}
+
+
+}
+
+
+
+// Performs a line trace from the center of the screen to detect interactable items
+void AInv_PlayerController::TraceForItem()
+{
+	
+	if (!IsValid(GEngine)|| !IsValid(GEngine->GameViewport)) return;// Validate engine and viewport
+
+	// Get screen center
+	FVector2D ViewportSize;
+	GEngine->GameViewport->GetViewportSize(ViewportSize);
+	const FVector2D ViewportCenter = ViewportSize / 2.f;
+
+	// Convert screen position to world space
+	FVector TraceStart;
+	FVector Forward;
+	if (!UGameplayStatics::DeprojectScreenToWorld(this, ViewportCenter, TraceStart, Forward)) return;
+
+	// Define end point of the trace
+	const FVector TraceEnd = TraceStart + (Forward * TraceLength);
+
+	FHitResult HitResult;
+
+	// Perform the trace
+	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ItemTraceChannel);
+
+	// Update references to currently and previously traced actors
+	LastActor = ThisActor;
+	ThisActor = HitResult.GetActor();
+
+	if (ThisActor == LastActor) return;	// If the traced actor hasn't changed, do nothing
+
+	if (ThisActor.IsValid())
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Started tracing a new actor"));
+		}
+	}
+	if (LastActor.IsValid())
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Stoped tracing last actor"));
+		}
+	}
+
 
 
 }
