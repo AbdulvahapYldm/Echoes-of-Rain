@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "Items/Components/Inv_ItemComponent.h"
+#include "Interaction/Inv_HighlightableInterface.h"
 
 
 AInv_PlayerController::AInv_PlayerController()
@@ -129,6 +130,12 @@ void AInv_PlayerController::TraceForItem()
 
 	if (ThisActor.IsValid())
 	{
+		if (UActorComponent* Highlightable = ThisActor->FindComponentByInterface(UInv_HighlightableInterface::StaticClass()); IsValid(Highlightable))
+		{
+			IInv_HighlightableInterface::Execute_Highlight(Highlightable);
+		}
+
+
 		UInv_ItemComponent* ItemComponent = ThisActor->FindComponentByClass<UInv_ItemComponent>();
 
 		if (!IsValid(ItemComponent)) return;
@@ -139,9 +146,9 @@ void AInv_PlayerController::TraceForItem()
 
 	if (LastActor.IsValid())
 	{
-		if (GEngine)
+		if (UActorComponent* Highlightable = LastActor->FindComponentByInterface(UInv_HighlightableInterface::StaticClass()); IsValid(Highlightable))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Stoped tracing last actor"));
+			IInv_HighlightableInterface::Execute_UnHighlight(Highlightable);
 		}
 	}
 
