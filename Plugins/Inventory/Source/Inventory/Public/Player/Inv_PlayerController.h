@@ -14,6 +14,7 @@
 class UInputMappingContext;
 class UInputAction;
 class UInv_HUDWidget;
+class UInv_InventoryComponent;
 
 UCLASS()
 class INVENTORY_API AInv_PlayerController : public APlayerController
@@ -25,6 +26,9 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
+	/*INPUT*/
+	UFUNCTION(BlueprintCallable)
+	void ToggleInventory();
 
 protected:
 
@@ -35,16 +39,27 @@ protected:
 
 private:
 
+	/*INPUT*/
+
 	void PrimaryInteract(); // Function triggered by input (e.g., pressing E)
-	void CreateHUDWidget(); // Initializes and adds the HUD widget to the viewport
-	void TraceForItem();   // Performs a line trace from the screen center to detect items
+
+	TWeakObjectPtr<UInv_InventoryComponent>InventoryComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TObjectPtr<UInputMappingContext>Default_Inventory_IMC; // Input mapping context for inventory controls
 
 
+
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TObjectPtr<UInputAction>PrimaryInteractAction; // Input action for primary interaction (e.g., "E" key)
+
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
+	TObjectPtr<UInputAction>ToggleInventoryAction;
+
+
+
+	void CreateHUDWidget(); // Initializes and adds the HUD widget to the viewport
+	void TraceForItem();   // Performs a line trace from the screen center to detect items
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TSubclassOf<UInv_HUDWidget>HUDWidgetClass; // Widget class to be used as the player's HUD (must be a subclass of UInv_HUDWidget)

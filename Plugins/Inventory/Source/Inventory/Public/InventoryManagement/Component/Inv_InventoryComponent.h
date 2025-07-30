@@ -18,6 +18,8 @@ public:
 
 	UInv_InventoryComponent();
 
+	void ToggleInventoryMenu();
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -27,11 +29,14 @@ private:
 	TWeakObjectPtr<APlayerController>OwningController;
 
 	void ConstructInventory();
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+	TSubclassOf< UInv_InventoryBase>InventoryMenuClass;
 
 	UPROPERTY()
 	TObjectPtr< UInv_InventoryBase>InventoryMenu;
 
-	UPROPERTY(EditAnywhere, Category = "Inventory")
-	TSubclassOf< UInv_InventoryBase>InventoryMenuClass;
+	bool bInventoryMenuOpen;
+	void OpenInventoryMenu();
+	void CloseInventoryMenu();
 		
 };

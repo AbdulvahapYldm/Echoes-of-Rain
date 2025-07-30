@@ -11,6 +11,7 @@
 
 #include "Items/Components/Inv_ItemComponent.h"
 #include "Interaction/Inv_HighlightableInterface.h"
+#include "InventoryManagement/Component/Inv_InventoryComponent.h"
 
 
 AInv_PlayerController::AInv_PlayerController()
@@ -37,9 +38,9 @@ void AInv_PlayerController::BeginPlay()
 	
 	}
 
-
+	InventoryComponent = FindComponentByClass<UInv_InventoryComponent>();
 	CreateHUDWidget(); // Create and display the HUD widget
-
+	
 }
 
 
@@ -63,7 +64,7 @@ void AInv_PlayerController::SetupInputComponent()// The input component is confi
 	{
 		// Bind input action to the corresponding function
 		EnhancedInputComponent->BindAction(PrimaryInteractAction, ETriggerEvent::Started, this, &AInv_PlayerController::PrimaryInteract);
-		
+		EnhancedInputComponent->BindAction(ToggleInventoryAction, ETriggerEvent::Started, this, &AInv_PlayerController::ToggleInventory);
 
 	}
 }
@@ -72,6 +73,13 @@ void AInv_PlayerController::SetupInputComponent()// The input component is confi
 void AInv_PlayerController::PrimaryInteract()
 {
 	UE_LOG(LogTemp, Warning, TEXT("E Key Pressed! "));
+}
+
+void AInv_PlayerController::ToggleInventory()
+{
+	if (!InventoryComponent.IsValid()) return;
+
+	InventoryComponent->ToggleInventoryMenu();
 }
 
 
@@ -117,8 +125,13 @@ void AInv_PlayerController::TraceForItem()
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ItemTraceChannel);
 
 	// Update references to currently and previously traced actors
+	//LastActor = ThisActor;
+	//ThisActor = HitResult.GetActor();
+	AActor* HitActor = HitResult.GetActor();
+	if (HitActor == ThisActor) return; // Aktör degismediyse islem yapma
+
 	LastActor = ThisActor;
-	ThisActor = HitResult.GetActor();
+	ThisActor = HitActor;
 
 
 	if (!ThisActor.IsValid())
