@@ -42,6 +42,7 @@ private:
 	TWeakObjectPtr<APlayerController>OwningController;
 
 	void ConstructInventory();
+
 	UPROPERTY(EditAnywhere, Category = "Inventory")
 	TSubclassOf< UInv_InventoryBase>InventoryMenuClass;
 
@@ -49,6 +50,7 @@ private:
 	TObjectPtr< UInv_InventoryBase>InventoryMenu;
 
 	bool bInventoryMenuOpen;
+
 	void OpenInventoryMenu();
 	void CloseInventoryMenu();
 		

@@ -19,6 +19,11 @@ void UInv_SpatialInventory::NativeOnInitialized()
 	ShowEquippable();
 }
 
+FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const
+{
+	return FInv_SlotAvailabilityResult();
+}
+
 
 // Set the specified grid as active and disable its associated button
 void UInv_SpatialInventory::SetActiveGrid(UInv_InventroyGrid* Grid, UButton* Button)

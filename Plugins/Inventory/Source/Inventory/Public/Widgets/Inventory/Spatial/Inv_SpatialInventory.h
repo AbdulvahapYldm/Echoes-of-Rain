@@ -25,6 +25,8 @@ public:
 
 	virtual void NativeOnInitialized() override; // Called when the widget is first initialized
 
+	virtual FInv_SlotAvailabilityResult HasRoomForItem(UInv_ItemComponent* ItemComponent) const override;
+
 private:
 
 	UPROPERTY(meta = (BindWidget))
