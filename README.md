@@ -1,5 +1,5 @@
 # Echoes-of-Rain
-A survival, farming, and base-building game set in a medieval world. Developed as a portfolio project, the game features core gameplay systems such as crafting, farming, inventory management, and a dynamic trading mechanic.
+A survival, farming, and base-building game set in a medieval world. Developing as a portfolio project, the game features core gameplay systems such as crafting, farming, inventory management, and a dynamic trading mechanic.
 
 # 🎮 Game Overview
 - **Genre:** Survival / Crafting / Farming / Base-Building
@@ -23,7 +23,7 @@ A survival, farming, and base-building game set in a medieval world. Developed a
 
 ## Core Systems
 - [x] Project Setup
-- [ ] Inventory System (Basic)
+- [x] Inventory System (Basic)
 - [ ] Crafting System (UI + Recipes)
 - [ ] Farming System (Soil + Watering)
 - [ ] Base Building (Placement & Save)
