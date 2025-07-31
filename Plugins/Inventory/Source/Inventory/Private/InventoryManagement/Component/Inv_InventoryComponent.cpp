@@ -6,6 +6,7 @@
 
 
 
+
 UInv_InventoryComponent::UInv_InventoryComponent()
 {
 
@@ -79,3 +80,4 @@ void UInv_InventoryComponent::CloseInventoryMenu()
 	OwningController->SetShowMouseCursor(false);
 
 }
+
