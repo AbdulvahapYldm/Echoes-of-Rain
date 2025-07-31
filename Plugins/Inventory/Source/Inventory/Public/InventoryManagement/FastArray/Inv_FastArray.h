@@ -5,6 +5,7 @@
 #include "Inv_FastArray.generated.h"
 
 class UInv_InventoryComponent;
+class UInv_ItemComponent;
 class UInv_InventoryItem;
 
 

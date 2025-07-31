@@ -3,6 +3,7 @@
 
 #include "InventoryManagement/Component/Inv_InventoryComponent.h"
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
+#include "Items/Components/Inv_ItemComponent.h"
 
 
 
@@ -14,7 +15,6 @@ UInv_InventoryComponent::UInv_InventoryComponent()
 
 
 }
-
 
 void UInv_InventoryComponent::BeginPlay()
 {
@@ -81,3 +81,9 @@ void UInv_InventoryComponent::CloseInventoryMenu()
 
 }
 
+
+
+void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
+{
+	NoRoomInInventory.Broadcast();
+}

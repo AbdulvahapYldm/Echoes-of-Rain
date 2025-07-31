@@ -72,7 +72,13 @@ void AInv_PlayerController::SetupInputComponent()// The input component is confi
 // Called when "E" key (or assigned action) is pressed
 void AInv_PlayerController::PrimaryInteract()
 {
-	UE_LOG(LogTemp, Warning, TEXT("E Key Pressed! "));
+	if (!ThisActor.IsValid()) return;
+
+	UInv_ItemComponent* ItemComp = ThisActor->FindComponentByClass<UInv_ItemComponent>();
+	if (!IsValid(ItemComp)||!InventoryComponent.IsValid()) return;
+
+	InventoryComponent->TryAddItem(ItemComp);
+	
 }
 
 void AInv_PlayerController::ToggleInventory()
