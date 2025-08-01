@@ -4,7 +4,7 @@
 #include "InventoryManagement/Component/Inv_InventoryComponent.h"
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 #include "Items/Components/Inv_ItemComponent.h"
-
+#include "Net/UnrealNetwork.h"
 
 
 
@@ -12,8 +12,22 @@ UInv_InventoryComponent::UInv_InventoryComponent()
 {
 
 	PrimaryComponentTick.bCanEverTick = false;
+	
+	SetIsReplicatedByDefault(true);
+	bReplicateUsingRegisteredSubObjectList = true;
+	bInventoryMenuOpen = false;
+
+}
 
 
+void UInv_InventoryComponent::AddRepSubObj(UObject* SubObj)
+{
+	if (IsUsingRegisteredSubObjectList() && IsReadyForReplication() && IsValid(SubObj))
+	{
+		AddReplicatedSubObject(SubObj);
+
+	}
+	
 }
 
 void UInv_InventoryComponent::BeginPlay()
@@ -47,6 +61,13 @@ void UInv_InventoryComponent::ToggleInventoryMenu()
 		OpenInventoryMenu();
 	}
 
+}
+
+void UInv_InventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	UObject::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ThisClass, InventoryList);
 }
 
 
@@ -93,4 +114,23 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 		return;
 	}
 	
+	if (Result.Item.IsValid()&&Result.bStackable)
+	{
+		Server_AddStacksToItem(ItemComponent, Result.TotalRoomToFill, Result.Remainder);
+	}
+	else if(Result.TotalRoomToFill>0)
+	{
+		Server_AddNewItem(ItemComponent,Result.bStackable? Result.TotalRoomToFill:0);
+	}
+
+
+}
+void UInv_InventoryComponent::Server_AddNewItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount)
+{
+	UInv_InventoryItem*NewItem= InventoryList.AddEntry(ItemComponent);
+
+}
+void UInv_InventoryComponent::Server_AddStacksToItem_Implementation(UInv_ItemComponent* ItemComponent, int32 StackCount, int32 Remainder)
+{
+
 }
