@@ -14,6 +14,8 @@
 
 class UInv_GridSlot;
 class UCanvasPanel;
+class UInv_InventoryComponent;
+
 
 UCLASS()
 class INVENTORY_API UInv_InventroyGrid : public UUserWidget
@@ -28,7 +30,14 @@ public:
 	// Returns the item category assigned to this grid (e.g. Equippable, Consumable)
 	EInv_ItemCategory GetItemCategory() const { return ItemCategory; }
 	
+	UFUNCTION()
+	void AddItem(UInv_InventoryItem* Item);
+
+
 private:
+
+	TWeakObjectPtr<UInv_InventoryComponent>InventoryComponent;
+
 
 	// Dynamically creates and arranges slot widgets in a grid format
 	void ConstructGrid();
@@ -62,6 +71,6 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCanvasPanel> CanvasPanel;
 
-
+	bool bMatchesCategory(const UInv_InventoryItem* Item) const;
 
 };
