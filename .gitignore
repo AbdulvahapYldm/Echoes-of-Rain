@@ -73,3 +73,43 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Unreal Engine build klasörleri (derlenmiş içerikler)
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Platforma özel geçici dosyalar
+.vscode/
+.idea/
+.vs/
+*.sln
+*.opensdf
+*.sdf
+*.suo
+*.VC.db
+*.VC.opendb
+*.xcodeproj
+*.xcworkspace
+*.xcuserdata/
+*.iml
+
+# Sistem dosyaları
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Crash ve log dosyaları
+*.log
+*.dmp
+
+# Geçici dosyalar / kilitler
+*.tmp
+*.lock
+
+# Pluginler içindeki build çıktıları
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
